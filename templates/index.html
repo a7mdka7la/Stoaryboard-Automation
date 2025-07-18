@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Research Assistant</title>
+    <meta name="description" content="Get instant summaries and insights from scientific sources using AI-powered research assistance">
+    <meta name="theme-color" content="#0f172a">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Modern color palette - Deep space theme */
+            --color-primary: #00f5ff;
+            --color-primary-dark: #00bcd4;
+            --color-primary-light: #4dd0e1;
+            --color-secondary: #ff6b35;
+            --color-accent: #7c3aed;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-error: #ef4444;
+            
+            /* Enhanced gradient colors */
+            --gradient-primary: linear-gradient(135deg, #00f5ff 0%, #0078ff 50%, #7c3aed 100%);
+            --gradient-secondary: linear-gradient(135deg, #ff6b35 0%, #f59e0b 100%);
+            --gradient-surface: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.9) 100%);
+            
+            /* Neutral colors - Enhanced contrast */
+            --color-background: #0a0f1c;
+            --color-surface: #1e293b;
+            --color-surface-light: #334155;
+            --color-surface-lighter: #475569;
+            --color-white: #ffffff;
+            --color-gray-50: #f8fafc;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-300: #cbd5e1;
+            --color-gray-400: #94a3b8;
+            --color-gray-500: #64748b;
+            --color-gray-600: #475569;
+            --color-gray-700: #334155;
+            --color-gray-800: #1e293b;
+            --color-gray-900: #0f172a;
+            
+            /* Spacing scale */
+            --space-xs: 0.125rem;
+            --space-sm: 0.375rem;
+            --space-md: 0.75rem;
+            --space-lg: 1rem;
+            --space-xl: 1.5rem;
+            --space-2xl: 2rem;
+            --space-3xl: 3rem;
+            --space-4xl: 4rem;
+            --space-5xl: 6rem;
+            
+            /* Typography scale */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+            --text-6xl: 3.75rem;
+            
+            /* Border radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-3xl: 2rem;
+            --radius-full: 9999px;
+            
+            /* Enhanced shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-glow: 0 0 30px rgba(0, 245, 255, 0.3);
+            --shadow-glow-hover: 0 0 50px rgba(0, 245, 255, 0.5);
+            
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Z-index scale */
+            --z-dropdown: 1000;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
+        /* Reset and base styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-background);
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.05) 0%, transparent 60%);
+            min-height: 100vh;
+            color: var(--color-gray-100);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        @media (prefers-contrast: high) {
+            :root {
+                --color-primary: #ffffff;
+                --color-background: #000000;
+            }
+        }
+
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: var(--space-lg);
+            background: var(--color-primary);
+            color: var(--color-background);
+            padding: var(--space-sm) var(--space-lg);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            z-index: var(--z-tooltip);
+            font-weight: 600;
+            transition: var(--transition-fast);
+        }
+
+        .skip-link:focus {
+            top: var(--space-lg);
+        }
+
+        /* Enhanced background effects */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--color-primary);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 2px; height: 2px; top: 20%; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 3px; height: 3px; top: 60%; left: 80%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 1px; height: 1px; top: 80%; left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 2px; height: 2px; top: 40%; left: 70%; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 3px; height: 3px; top: 10%; left: 60%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            padding: var(--space-5xl) var(--space-lg) var(--space-4xl);
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scaleX(1); }
+            50% { opacity: 1; transform: translateX(-50%) scaleX(1.2); }
+        }
+
+        .header h1 {
+            font-size: clamp(var(--text-3xl), 8vw, var(--text-6xl));
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-xl);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(0, 245, 255, 0.6)); }
+        }
+
+        .header p {
+            font-size: clamp(var(--text-lg), 3vw, var(--text-2xl));
+            color: var(--color-gray-300);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        /* Quota status styles */
+        .quota-status {
+            margin-top: var(--space-lg);
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: var(--radius-lg);
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: var(--text-sm);
+        }
+
+        .quota-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            color: var(--color-gray-300);
+        }
+
+        .quota-label {
+            font-weight: 500;
+        }
+
+        .quota-value {
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .quota-total {
+            color: var(--color-gray-400);
+        }
+
+        .quota-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: var(--space-xs);
+        }
+
+        .quota-indicator.good {
+            background-color: #10b981;
+        }
+
+        .quota-indicator.warning {
+            background-color: #f59e0b;
+        }
+
+        .quota-indicator.critical {
+            background-color: #ef4444;
+        }
+
+        /* Enhanced search section */
+        .search-section {
+            padding: var(--space-4xl) var(--space-lg);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .search-form {
+            position: relative;
+            margin-bottom: var(--space-4xl);
+        }
+
+        .search-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-sm);
+            transition: var(--transition-base);
+        }
+
+        .search-input-container:focus-within {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-glow);
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--space-xl);
+            color: var(--color-gray-400);
+            transition: var(--transition-fast);
+            z-index: 2;
+        }
+
+        .search-input-container:focus-within .search-icon {
+            color: var(--color-primary);
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: var(--space-xl) var(--space-xl) var(--space-xl) 3.5rem;
+            font-size: var(--text-lg);
+            color: var(--color-white);
+            font-weight: 500;
+            border-radius: var(--radius-xl);
+        }
+
+        .search-input::placeholder {
+            color: var(--color-gray-400);
+            font-weight: 400;
+        }
+
+        .search-btn {
+            background: var(--gradient-primary);
+            color: var(--color-background);
+            border: none;
+            padding: var(--space-lg) var(--space-2xl);
+            border-radius: var(--radius-xl);
+            font-weight: 700;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: var(--transition-base);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .search-btn:hover::before {
+            left: 100%;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow-hover);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading spinner for button */
+        .search-btn[aria-busy="true"]::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            right: var(--space-lg);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes spin {
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        /* Enhanced examples section */
+        .examples {
+            margin-bottom: var(--space-4xl);
+        }
+
+        .examples h2 {
+            text-align: center;
+            color: var(--color-gray-300);
+            margin-bottom: var(--space-2xl);
+            font-size: var(--text-xl);
+            font-weight: 600;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .example-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            cursor: pointer;
+            transition: var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: var(--transition-base);
+        }
+
+        .example-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .example-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .example-icon {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-md);
+            display: block;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--color-white);
+            margin-bottom: var(--space-sm);
+            font-size: var(--text-lg);
+        }
+
+        .example-description {
+            color: var(--color-gray-400);
+            font-size: var(--text-sm);
+            line-height: 1.5;
+        }
+
+        /* Enhanced loading section */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: var(--space-5xl) var(--space-lg);
+            position: relative;
+        }
+
+        .loading[aria-hidden="false"] {
+            display: block;
+        }
+
+        .loading-animation {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--space-3xl);
+        }
+
+        .loading-ring {
+            position: absolute;
+            border: 3px solid rgba(0, 245, 255, 0.2);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .loading-ring:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            animation-duration: 2s;
+        }
+
+        .loading-ring:nth-child(2) {
+            width: 100px;
+            height: 100px;
+            top: 10px;
+            left: 10px;
+            animation-duration: 1.5s;
+            animation-direction: reverse;
+        }
+
+        .loading-ring:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            left: 20px;
+            animation-duration: 1s;
+        }
+
+        .loading h3 {
+            color: var(--color-primary);
+            margin-bottom: var(--space-lg);
+            font-weight: 700;
+            font-size: var(--text-2xl);
+        }
+
+        .loading p {
+            color: var(--color-gray-400);
+            font-size: var(--text-lg);
+        }
+
+        /* Enhanced results section */
+        .results {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+        }
+
+        .results[aria-hidden="false"] {
+            display: block;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .query-info {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-3xl);
+            position: relative;
+        }
+
+        .query-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--space-2xl);
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-3xl) var(--space-2xl);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .stat-item {
+            text-align: center;
+            transition: var(--transition-base);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-label {
+            color: var(--color-gray-400);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Enhanced result cards */
+        .result-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            margin-bottom: var(--space-3xl);
+            overflow: hidden;
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-secondary);
+            transform: scaleX(0);
+            transition: var(--transition-base);
+        }
+
+        .result-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .result-card:hover {
+            border-color: rgba(255, 107, 53, 0.3);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .result-header {
+            padding: var(--space-2xl);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: var(--space-lg);
+            line-height: 1.3;
+        }
+
+        .result-url {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            transition: var(--transition-fast);
+            word-break: break-all;
+        }
+
+        .result-url:hover {
+            color: var(--color-primary-light);
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        }
+
+        .meta-info {
+            margin-top: var(--space-lg);
+            color: var(--color-gray-400);
+            font-size: var(--text-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .result-content {
+            padding: var(--space-2xl);
+        }
+
+        .summary-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .summary-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: var(--space-lg);
+        }
+
+        .summary-text {
+            color: var(--color-gray-300);
+            line-height: 1.7;
+            font-size: var(--text-base);
+            margin-bottom: var(--space-lg);
+        }
+
+        .findings-list, .insights-list {
+            margin-left: var(--space-xl);
+            color: var(--color-gray-300);
+        }
+
+        .findings-list li, .insights-list li {
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+            padding-left: var(--space-md);
+            position: relative;
+        }
+
+        .findings-list li::marker {
+            color: var(--color-primary);
+        }
+
+        .insights-list li::marker {
+            color: var(--color-secondary);
+        }
+
+        /* Status messages */
+        .status-message {
+            position: fixed;
+            top: var(--space-2xl);
+            right: var(--space-2xl);
+            z-index: var(--z-tooltip);
+            padding: var(--space-lg) var(--space-xl);
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            animation: slideInRight 0.3s ease-out;
+            box-shadow: var(--shadow-2xl);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.9);
+            border: 1px solid var(--color-success);
+            color: var(--color-white);
+        }
+
+        .status-message.error {
+            background: rgba(239, 68, 68, 0.9);
+            border: 1px solid var(--color-error);
+            color: var(--color-white);
+        }
+
+        /* Error styles */
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--color-error);
+            padding: var(--space-2xl);
+            border-radius: var(--radius-xl);
+            margin: var(--space-xl) 0;
+            backdrop-filter: blur(10px);
+        }
+
+        /* YouTube Videos Section */
+        .youtube-section {
+            margin-top: var(--space-5xl);
+            padding: var(--space-3xl) 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .youtube-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .youtube-header h2 {
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-lg);
+        }
+
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-2xl);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .youtube-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .youtube-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
+            transform: scaleX(0);
+            transition: var(--transition-base);
+        }
+
+        .youtube-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .youtube-card:hover {
+            border-color: rgba(255, 68, 68, 0.3);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .youtube-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .youtube-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-base);
+        }
+
+        .youtube-thumbnail:hover img {
+            transform: scale(1.05);
+        }
+
+        .youtube-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--text-2xl);
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .youtube-play-button:hover {
+            background: #ff0000;
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .youtube-content {
+            padding: var(--space-xl);
+        }
+
+        .youtube-title {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: var(--space-md);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .youtube-link {
+            color: #ff4444;
+            text-decoration: none;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .youtube-link:hover {
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .no-youtube-videos {
+            text-align: center;
+            padding: var(--space-4xl);
+            color: var(--color-gray-400);
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: var(--radius-2xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Utility classes */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-md);
+            }
+
+            .header {
+                padding: var(--space-3xl) var(--space-md) var(--space-2xl);
+            }
+
+            .search-section {
+                padding: var(--space-2xl) var(--space-md);
+            }
+
+            .search-input {
+                padding: var(--space-lg) var(--space-lg) var(--space-lg) 3rem;
+                font-size: var(--text-base);
+            }
+
+            .search-btn {
+                padding: var(--space-md) var(--space-lg);
+            }
+
+            .example-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-lg);
+                padding: var(--space-2xl) var(--space-lg);
+            }
+
+            .result-header {
+                padding: var(--space-xl);
+            }
+
+            .result-content {
+                padding: var(--space-xl);
+            }
+
+            .status-message {
+                top: var(--space-lg);
+                right: var(--space-lg);
+                left: var(--space-lg);
+                max-width: none;
+            }
+
+            .youtube-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-lg);
+            }
+
+            .youtube-section {
+                margin-top: var(--space-3xl);
+                padding: var(--space-2xl) 0;
+            }
+
+            .youtube-header h2 {
+                font-size: var(--text-2xl);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+
+            .youtube-thumbnail {
+                height: 200px;
+            }
+
+            .youtube-content {
+                padding: var(--space-lg);
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .search-input:focus-visible,
+        .search-btn:focus-visible,
+        .example-card:focus-visible,
+        .result-url:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .result-card,
+            .query-info,
+            .stats-bar,
+            .example-card {
+                border-width: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+    
+    <div class="container">
+        <header class="header" role="banner">
+            <h1>🤖 AI Research Assistant</h1>
+            <p>Get instant summaries and insights from scientific sources using advanced AI</p>
+            
+            <!-- Quota Status Display -->
+            <div id="quota-status" class="quota-status" style="display: none;">
+                <div class="quota-info">
+                    <span class="quota-label">API Quota:</span>
+                    <span id="quota-remaining" class="quota-value">--</span>
+                    <span class="quota-total">/ 100</span>
+                    <span id="quota-indicator" class="quota-indicator"></span>
+                </div>
+            </div>
+        </header>
+
+        <main id="main" class="search-section" role="main">
+            <form class="search-form" role="search" aria-label="Research query search">
+                <label for="searchInput" class="visually-hidden">
+                    Enter your research question
+                </label>
+                <div class="search-input-container">
+                    <svg class="search-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Ask any research question..."
+                        maxlength="500"
+                        autocomplete="off"
+                        spellcheck="true"
+                        aria-describedby="search-help"
+                        required
+                    >
+                    <button 
+                        type="submit" 
+                        id="searchBtn" 
+                        class="search-btn"
+                        aria-describedby="search-status"
+                    >
+                        <span class="visually-hidden">Search</span>
+                        Search
+                    </button>
+                </div>
+                <div id="search-help" class="visually-hidden">
+                    Enter a research question to get AI-powered summaries from scientific sources
+                </div>
+            </form>
+
+            <section class="examples" aria-labelledby="examples-heading">
+                <h2 id="examples-heading">💡 Popular Research Topics</h2>
+                <div class="example-grid" role="group" aria-label="Example research questions">
+                    <div class="example-card" tabindex="0" data-query="Determine soluble oxygen in water" role="button" aria-label="Search for measuring dissolved oxygen">
+                        <span class="example-icon">🧪</span>
+                        <div class="example-title">Dissolved Oxygen Measurement</div>
+                        <div class="example-description">Learn methods and techniques for measuring oxygen levels in water samples</div>
+                    </div>
+                    <div class="example-card" tabindex="0" data-query="Machine learning algorithms for natural language processing" role="button" aria-label="Search for ML in NLP">
+                        <span class="example-icon">🤖</span>
+                        <div class="example-title">ML for Natural Language</div>
+                        <div class="example-description">Explore machine learning approaches for text analysis and understanding</div>
+                    </div>
+                    <div class="example-card" tabindex="0" data-query="Climate change impact on ocean pH levels" role="button" aria-label="Search for climate and ocean pH">
+                        <span class="example-icon">🌊</span>
+                        <div class="example-title">Climate & Ocean Chemistry</div>
+                        <div class="example-description">Research the effects of climate change on marine ecosystem chemistry</div>
+                    </div>
+                    <div class="example-card" tabindex="0" data-query="Renewable energy storage solutions" role="button" aria-label="Search for energy storage">
+                        <span class="example-icon">⚡</span>
+                        <div class="example-title">Energy Storage Tech</div>
+                        <div class="example-description">Discover innovative solutions for storing renewable energy efficiently</div>
+                    </div>
+                    <div class="example-card" tabindex="0" data-query="Artificial intelligence in medical diagnosis" role="button" aria-label="Search for AI in medicine">
+                        <span class="example-icon">🏥</span>
+                        <div class="example-title">AI in Healthcare</div>
+                        <div class="example-description">Investigate AI applications for medical diagnosis and treatment</div>
+                    </div>
+                    <div class="example-card" tabindex="0" data-query="Quantum computing applications" role="button" aria-label="Search for quantum computing">
+                        <span class="example-icon">⚛️</span>
+                        <div class="example-title">Quantum Computing</div>
+                        <div class="example-description">Explore practical applications of quantum computing technology</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <section id="loading" class="loading" aria-hidden="true" aria-live="polite">
+            <div class="loading-animation">
+                <div class="loading-ring"></div>
+                <div class="loading-ring"></div>
+                <div class="loading-ring"></div>
+            </div>
+            <h3>🔍 Analyzing Research Sources</h3>
+            <p>Searching through scientific databases and generating comprehensive summaries</p>
+        </section>
+
+        <section id="results" class="results" aria-hidden="true" aria-live="polite" aria-label="Search results">
+        </section>
+    </div>
+
+    <div id="status-container" aria-live="assertive" aria-atomic="true"></div>
+
+    <script>
+        class AIResearchAssistant {
+            constructor() {
+                this.searchInput = document.getElementById('searchInput');
+                this.searchBtn = document.getElementById('searchBtn');
+                this.searchForm = document.querySelector('.search-form');
+                this.loading = document.getElementById('loading');
+                this.results = document.getElementById('results');
+                this.statusContainer = document.getElementById('status-container');
+                this.exampleCards = document.querySelectorAll('.example-card');
+                
+                // Quota status elements
+                this.quotaStatus = document.getElementById('quota-status');
+                this.quotaRemaining = document.getElementById('quota-remaining');
+                this.quotaIndicator = document.getElementById('quota-indicator');
+                
+                this.isSearching = false;
+                this.currentController = null;
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.setupKeyboardNavigation();
+                this.initializeIntersectionObserver();
+                this.loadQuotaStatus(); // Load quota status on init
+            }
+
+            bindEvents() {
+                // Form submission
+                this.searchForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.search();
+                });
+
+                // Example card interactions
+                this.exampleCards.forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const query = e.currentTarget.dataset.query;
+                        this.setQuery(query);
+                    });
+                });
+
+                // Input validation and real-time feedback
+                this.searchInput.addEventListener('input', this.handleInputValidation.bind(this));
+                
+                // Search input focus effects
+                this.searchInput.addEventListener('focus', this.handleInputFocus.bind(this));
+                this.searchInput.addEventListener('blur', this.handleInputBlur.bind(this));
+            }
+
+            setupKeyboardNavigation() {
+                // Enhanced keyboard support for example cards
+                this.exampleCards.forEach(card => {
+                    card.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            card.click();
+                        }
+                    });
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + K to focus search
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        this.searchInput.focus();
+                    }
+                    
+                    // Escape to clear search or close results
+                    if (e.key === 'Escape') {
+                        if (this.searchInput.value) {
+                            this.searchInput.value = '';
+                            this.handleInputValidation();
+                        } else if (this.results.style.display === 'block') {
+                            this.clearResults();
+                        }
+                    }
+                });
+            }
+
+            initializeIntersectionObserver() {
+                // Add scroll animations for result cards
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.style.animationDelay = `${entry.target.dataset.index * 0.1}s`;
+                                entry.target.classList.add('animate-in');
+                            }
+                        });
+                    },
+                    { threshold: 0.1 }
+                );
+
+                // Will be used for result cards when they're created
+                this.intersectionObserver = observer;
+            }
+
+            handleInputFocus() {
+                this.searchInput.parentElement.classList.add('focused');
+            }
+
+            handleInputBlur() {
+                this.searchInput.parentElement.classList.remove('focused');
+            }
+
+            handleInputValidation() {
+                const query = this.searchInput.value.trim();
+                const isValid = query.length > 0 && query.length <= 500;
+                
+                this.searchBtn.disabled = !isValid || this.isSearching;
+                
+                // Real-time character count feedback
+                if (query.length > 450) {
+                    this.searchInput.style.borderColor = query.length > 500 ? 'var(--color-error)' : 'var(--color-warning)';
+                } else {
+                    this.searchInput.style.borderColor = '';
+                }
+                
+                // Update ARIA attributes
+                if (query.length > 500) {
+                    this.searchInput.setAttribute('aria-invalid', 'true');
+                    this.showStatus('Query too long (max 500 characters)', 'error');
+                } else {
+                    this.searchInput.removeAttribute('aria-invalid');
+                }
+            }
+
+            setQuery(query) {
+                this.searchInput.value = query;
+                this.searchInput.focus();
+                this.handleInputValidation();
+                
+                // Add visual feedback
+                this.searchInput.parentElement.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    this.searchInput.parentElement.style.transform = '';
+                }, 200);
+                
+                // Auto-search after a brief delay
+                setTimeout(() => this.search(), 300);
+            }
+
+            async loadQuotaStatus() {
+                try {
+                    const response = await fetch('/quota');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        this.updateQuotaDisplay(data.quota);
+                        this.quotaStatus.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.log('Could not load quota status:', error);
+                    // Hide quota display if unavailable
+                    this.quotaStatus.style.display = 'none';
+                }
+            }
+
+            updateQuotaDisplay(quota) {
+                this.quotaRemaining.textContent = quota.remaining;
+                
+                // Update indicator color based on remaining quota
+                this.quotaIndicator.className = 'quota-indicator';
+                if (quota.remaining > 50) {
+                    this.quotaIndicator.classList.add('good');
+                } else if (quota.remaining > 10) {
+                    this.quotaIndicator.classList.add('warning');
+                } else {
+                    this.quotaIndicator.classList.add('critical');
+                }
+                
+                // Disable search if no quota
+                if (quota.remaining === 0) {
+                    this.searchBtn.disabled = true;
+                    this.searchInput.placeholder = "Daily quota exceeded - try again tomorrow";
+                }
+            }
+
+            async search() {
+                const query = this.searchInput.value.trim();
+                
+                if (!query) {
+                    this.showStatus('Please enter a research question', 'error');
+                    this.searchInput.focus();
+                    return;
+                }
+
+                if (query.length > 500) {
+                    this.showStatus('Query too long (max 500 characters)', 'error');
+                    return;
+                }
+
+                // Cancel any ongoing request
+                if (this.currentController) {
+                    this.currentController.abort();
+                }
+
+                this.currentController = new AbortController();
+                
+                try {
+                    this.setLoadingState(true);
+                    
+                    const response = await fetch('/search', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ query: query }),
+                        signal: this.currentController.signal
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Search failed');
+                    }
+
+                    this.displayResults(data);
+                    this.showStatus('Search completed successfully', 'success');
+                    
+                    // Refresh quota status after search
+                    setTimeout(() => this.loadQuotaStatus(), 1000);
+
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        console.log('Search aborted');
+                        return;
+                    }
+                    
+                    this.displayError(error.message);
+                    this.showStatus(`Search failed: ${error.message}`, 'error');
+                    
+                    // Refresh quota status even on error (might be quota-related)
+                    setTimeout(() => this.loadQuotaStatus(), 1000);
+                } finally {
+                    this.setLoadingState(false);
+                    this.currentController = null;
+                }
+            }
+
+            setLoadingState(isLoading) {
+                this.isSearching = isLoading;
+                this.searchBtn.disabled = isLoading;
+                this.searchBtn.setAttribute('aria-busy', isLoading.toString());
+                
+                if (isLoading) {
+                    this.loading.style.display = 'block';
+                    this.loading.setAttribute('aria-hidden', 'false');
+                    this.results.style.display = 'none';
+                    this.results.setAttribute('aria-hidden', 'true');
+                    
+                    // Add loading text to button
+                    this.searchBtn.textContent = 'Searching...';
+                    
+                    // Announce to screen readers
+                    this.announceToScreenReader('Searching and analyzing content...');
+                } else {
+                    this.loading.style.display = 'none';
+                    this.loading.setAttribute('aria-hidden', 'true');
+                    this.searchBtn.textContent = 'Search';
+                }
+            }
+
+            displayResults(data) {
+                this.results.style.display = 'block';
+                this.results.setAttribute('aria-hidden', 'false');
+                
+                let html = '';
+
+                // Query info with enhanced styling
+                if (data.optimized_query) {
+                    html += `
+                        <div class="query-info" role="region" aria-labelledby="query-info-heading">
+                            <h3 id="query-info-heading" class="visually-hidden">Query Information</h3>
+                            <div style="display: grid; gap: var(--space-lg);">
+                                <div><strong style="color: var(--color-primary);">🎯 Original:</strong> ${this.escapeHtml(data.original_query)}</div>
+                                <div><strong style="color: var(--color-primary);">⚡ Optimized:</strong> ${this.escapeHtml(data.optimized_query)}</div>
+                                <div><strong style="color: var(--color-primary);">📊 Intent:</strong> ${this.escapeHtml(data.search_intent)}</div>
+                                <div><strong style="color: var(--color-primary);">💡 Strategy:</strong> ${this.escapeHtml(data.explanation)}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Enhanced stats bar
+                if (data.stats) {
+                    html += `
+                        <div class="stats-bar" role="region" aria-labelledby="stats-heading">
+                            <h3 id="stats-heading" class="visually-hidden">Search Statistics</h3>
+                            <div class="stat-item">
+                                <span class="stat-number">${data.stats.search_results_found}</span>
+                                <span class="stat-label">Results Found</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">${data.stats.results_processed}</span>
+                                <span class="stat-label">Processed</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">${data.stats.total_word_count?.toLocaleString() || 0}</span>
+                                <span class="stat-label">Words Analyzed</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">${data.stats.youtube_videos_found || 0}</span>
+                                <span class="stat-label">YouTube Videos</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Enhanced result cards
+                if (data.results && data.results.length > 0) {
+                    html += '<h2 class="visually-hidden">Search Results</h2>';
+                    
+                    data.results.forEach((result, index) => {
+                        html += `
+                            <article class="result-card" role="article" aria-labelledby="result-title-${index}" data-index="${index}">
+                                <header class="result-header">
+                                    <h3 id="result-title-${index}" class="result-title">${this.escapeHtml(result.title)}</h3>
+                                    <a href="${this.escapeHtml(result.url)}" target="_blank" rel="noopener noreferrer" class="result-url" aria-label="Open ${this.escapeHtml(result.title)} in new tab">
+                                        ${this.escapeHtml(result.url)}
+                                    </a>
+                                    <div class="meta-info">
+                                        <span>📄 ${result.word_count} words</span>
+                                        <span>🔗 External source</span>
+                                    </div>
+                                </header>
+                                <div class="result-content">
+                                    ${this.formatSummary(result.summary, index)}
+                                </div>
+                            </article>
+                        `;
+                    });
+                } else {
+                    html += `
+                        <div class="result-card" role="alert">
+                            <div class="result-content">
+                                <h3 style="color: var(--color-warning); margin-bottom: var(--space-lg);">No Results Found</h3>
+                                <p style="margin-bottom: var(--space-lg);">❌ No results were successfully processed. This might be due to:</p>
+                                <ul style="margin-left: var(--space-xl); color: var(--color-gray-400);">
+                                    <li style="margin-bottom: var(--space-md);">PDF files that couldn't be accessed</li>
+                                    <li style="margin-bottom: var(--space-md);">Rate limits on the AI service</li>
+                                    <li style="margin-bottom: var(--space-md);">Network connectivity issues</li>
+                                </ul>
+                                <p style="margin-top: var(--space-lg); color: var(--color-primary);">💡 Try a different query or try again in a few minutes.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Add YouTube videos section
+                if (data.youtube_videos && data.youtube_videos.length > 0) {
+                    html += `
+                        <section class="youtube-section" aria-labelledby="youtube-heading">
+                            <div class="youtube-header">
+                                <h2 id="youtube-heading">🎥 Related YouTube Videos</h2>
+                                <p style="color: var(--color-gray-400); font-size: var(--text-base);">Educational videos from trusted science channels</p>
+                            </div>
+                            <div class="youtube-grid">
+                                ${data.youtube_videos.map((video, index) => `
+                                    <article class="youtube-card" role="article" aria-labelledby="video-title-${index}">
+                                        <div class="youtube-thumbnail" onclick="window.open('${this.escapeHtml(video.url)}', '_blank')">
+                                            ${video.thumbnail ? 
+                                                `<img src="${this.escapeHtml(video.thumbnail)}" alt="YouTube video thumbnail" loading="lazy">` : 
+                                                `<div style="background: var(--color-gray-700); height: 100%; display: flex; align-items: center; justify-content: center;">
+                                                    <span style="color: var(--color-gray-400); font-size: var(--text-lg);">📹 Video</span>
+                                                </div>`
+                                            }
+                                            <div class="youtube-play-button" aria-label="Play video">
+                                                ▶
+                                            </div>
+                                        </div>
+                                        <div class="youtube-content">
+                                            <h3 id="video-title-${index}" class="youtube-title">${this.escapeHtml(video.title)}</h3>
+                                            <a href="${this.escapeHtml(video.url)}" target="_blank" rel="noopener noreferrer" class="youtube-link" aria-label="Watch ${this.escapeHtml(video.title)} on YouTube">
+                                                🎥 Watch on YouTube
+                                            </a>
+                                        </div>
+                                    </article>
+                                `).join('')}
+                            </div>
+                        </section>
+                    `;
+                } else if (data.results && data.results.length > 0) {
+                    // Show "no videos found" only if we have main results
+                    html += `
+                        <section class="youtube-section" aria-labelledby="youtube-heading">
+                            <div class="youtube-header">
+                                <h2 id="youtube-heading">🎥 Related YouTube Videos</h2>
+                            </div>
+                            <div class="no-youtube-videos">
+                                <p style="font-size: var(--text-lg); margin-bottom: var(--space-lg);">📹 No related videos found</p>
+                                <p style="color: var(--color-gray-500);">Try searching directly on YouTube for educational content about your topic</p>
+                            </div>
+                        </section>
+                    `;
+                }
+
+                this.results.innerHTML = html;
+                
+                // Add intersection observer to result cards
+                const resultCards = this.results.querySelectorAll('.result-card');
+                resultCards.forEach(card => {
+                    this.intersectionObserver.observe(card);
+                });
+                
+                // Announce results to screen readers
+                const resultCount = data.results?.length || 0;
+                this.announceToScreenReader(`Search completed. Found ${resultCount} results.`);
+                
+                // Smooth scroll to results
+                if (resultCount > 0) {
+                    this.results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            formatSummary(summary, index) {
+                if (summary.error) {
+                    return `<div class="error" role="alert">⚠️ ${this.escapeHtml(summary.error)}</div>`;
+                }
+
+                let html = '';
+
+                if (summary.brief_description) {
+                    html += `
+                        <section class="summary-section" aria-labelledby="brief-desc-${index}">
+                            <h4 id="brief-desc-${index}" class="summary-title">
+                                📋 Brief Description
+                            </h4>
+                            <div class="summary-text">${this.escapeHtml(summary.brief_description)}</div>
+                        </section>
+                    `;
+                }
+
+                if (summary.concise_summary) {
+                    html += `
+                        <section class="summary-section" aria-labelledby="summary-${index}">
+                            <h4 id="summary-${index}" class="summary-title">
+                                📄 Summary
+                            </h4>
+                            <div class="summary-text">${this.escapeHtml(summary.concise_summary)}</div>
+                        </section>
+                    `;
+                }
+
+                if (summary.key_findings && summary.key_findings.length > 0) {
+                    html += `
+                        <section class="summary-section" aria-labelledby="findings-${index}">
+                            <h4 id="findings-${index}" class="summary-title">
+                                🔍 Key Findings
+                            </h4>
+                            <ul class="findings-list">
+                                ${summary.key_findings.map(finding => `<li>${this.escapeHtml(finding)}</li>`).join('')}
+                            </ul>
+                        </section>
+                    `;
+                }
+
+                if (summary.actionable_insights && summary.actionable_insights.length > 0) {
+                    html += `
+                        <section class="summary-section" aria-labelledby="insights-${index}">
+                            <h4 id="insights-${index}" class="summary-title">
+                                💡 Actionable Insights
+                            </h4>
+                            <ul class="insights-list">
+                                ${summary.actionable_insights.map(insight => `<li>${this.escapeHtml(insight)}</li>`).join('')}
+                            </ul>
+                        </section>
+                    `;
+                }
+
+                return html || '<div class="summary-text">No summary available</div>';
+            }
+
+            displayError(message) {
+                this.results.style.display = 'block';
+                this.results.setAttribute('aria-hidden', 'false');
+                this.results.innerHTML = `
+                    <div class="error" role="alert">
+                        <strong>❌ Error:</strong> ${this.escapeHtml(message)}
+                        <br><br>
+                        <strong>💡 Try:</strong>
+                        <ul style="margin-left: var(--space-xl); margin-top: var(--space-lg);">
+                            <li style="margin-bottom: var(--space-md);">Rephrasing your question</li>
+                            <li style="margin-bottom: var(--space-md);">Using simpler terms</li>
+                            <li style="margin-bottom: var(--space-md);">Checking your internet connection</li>
+                            <li>Waiting a few minutes and trying again</li>
+                        </ul>
+                    </div>
+                `;
+                
+                this.announceToScreenReader(`Error: ${message}`);
+            }
+
+            clearResults() {
+                this.results.style.display = 'none';
+                this.results.setAttribute('aria-hidden', 'true');
+                this.results.innerHTML = '';
+            }
+
+            showStatus(message, type = 'info') {
+                const statusEl = document.createElement('div');
+                statusEl.className = `status-message ${type}`;
+                statusEl.textContent = message;
+                statusEl.setAttribute('role', type === 'error' ? 'alert' : 'status');
+                
+                this.statusContainer.appendChild(statusEl);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (statusEl.parentNode) {
+                        statusEl.parentNode.removeChild(statusEl);
+                    }
+                }, 5000);
+                
+                // Add dismiss functionality
+                statusEl.addEventListener('click', () => {
+                    if (statusEl.parentNode) {
+                        statusEl.parentNode.removeChild(statusEl);
+                    }
+                });
+            }
+
+            announceToScreenReader(message) {
+                const announcement = document.createElement('div');
+                announcement.setAttribute('aria-live', 'assertive');
+                announcement.setAttribute('aria-atomic', 'true');
+                announcement.className = 'visually-hidden';
+                announcement.textContent = message;
+                
+                document.body.appendChild(announcement);
+                
+                setTimeout(() => {
+                    document.body.removeChild(announcement);
+                }, 1000);
+            }
+
+            escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, (m) => map[m]);
+            }
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new AIResearchAssistant();
+        });
+
+        // Service worker registration for PWA capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => console.log('SW registered'))
+                    .catch(() => console.log('SW registration failed'));
+            });
+        }
+
+        // Add performance monitoring
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    console.log(`Page load time: ${perfData.loadEventEnd - perfData.loadEventStart}ms`);
+                }, 0);
+            });
+        }
+    </script>
+</body>
+</html>
